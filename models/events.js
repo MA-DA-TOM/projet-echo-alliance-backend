@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const Benevole = require('./benevoles');
 
 const adressEventSchema = mongoose.Schema({
-    longitude: String,
-    latitude: String,
+    longitude: Number,
+    latitude: Number,
     numero: String,
     //String si jamais 31bis par exemple
     rue: String,
@@ -10,15 +11,19 @@ const adressEventSchema = mongoose.Schema({
     codePostal: Number
 })
 
+const benevoleSchema = mongoose.Schema({
+  benevoles:[],
+})
+
 
 const eventSchema = mongoose.Schema({
   name: String,
   description: String,
-  date: Date,
-  horaire: Date,
+  dateDebut: Date,
+  dateFin: Date,
+  duree: Number,
   adresse: adressEventSchema,
-  benevole: [{ type: mongoose.Schema.Types.ObjectId, ref: 'benevoles' }],
-  association: [{ type: mongoose.Schema.Types.ObjectId, ref: 'associations' }],
+  bénévole: benevoleSchema,
 });
 
 const Event = mongoose.model('events', eventSchema);

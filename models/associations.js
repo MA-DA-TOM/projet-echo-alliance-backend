@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const adressAssoSchema = mongoose.Schema({
-    longitude: String,
-    latitude: String,
+    longitude: Number,
+    latitude: Number,
     numero: String,
     //String si jamais 31bis par exemple
-    rue: String,
+    adresse: String,
     ville: String,
     codePostal: Number
 })
