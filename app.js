@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 
 var express = require('express');
 var path = require('path');
@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var benevoleRouter = require('./routes/benevole');
 var eventRouter = require('./routes/evenement');
 var assoRouter = require('./routes/association');
+var entrepriseRouter = require('./routes/entreprise')
 
 var app = express();
 
@@ -23,7 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/benevole', benevoleRouter);
-app.use('/event', eventRouter);
-app.use('/asso', assoRouter);
+app.use('/evenement', eventRouter);
+app.use('/association', assoRouter);
+app.use('/entreprise',entrepriseRouter)
 
 module.exports = app;

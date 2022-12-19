@@ -1,19 +1,30 @@
 const mongoose = require('mongoose');
 
+const coordSchema = mongoose.Schema({
+  longitude: Number,
+  latitude: Number,
+})
+
 const AdressEntrepriseSchema = mongoose.Schema({
-    longitude: Number,
-    latitude: Number,
-    numero: String,
-    //String si jamais 31bis par exemple
-    adresse: String,
-    ville: String,
-    codePostal: Number
+  coordinate: coordSchema,
+  numero: String,
+  //String si jamais 31bis par exemple
+  rue: String,
+  ville: String,
+  codePostal: Number
 })
 
 
 const dirigeantSchema = mongoose.Schema({
-    nom: String,
-    prenom: String,
+  nom: String,
+  prenom: String,
+  telephone: Number,
+})
+
+const offresSchema = mongoose.Schema({
+  1: String,
+  2: String,
+  3: String,
 })
 
 const entrepriseSchema = mongoose.Schema({
@@ -22,10 +33,11 @@ const entrepriseSchema = mongoose.Schema({
   siteWeb: String,
   email: String,
   password: String,
-  token: String, 
+  token: String,
   siret: Number,
-  dirigeant: dirigeantSchema,
   adresse: AdressEntrepriseSchema,
+  dirigeant: dirigeantSchema,
+  offres: offresSchema,
 });
 
 const Entreprise = mongoose.model('entreprises', entrepriseSchema);

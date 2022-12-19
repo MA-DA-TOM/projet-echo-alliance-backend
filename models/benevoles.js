@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const mesEventSchema = mongoose.Schema({
-  mesEvent: [],
-});
+// const mesEventSchema = mongoose.Schema({
+//   mesEvent: [],
+// });
 
 const benevoleSchema = mongoose.Schema({
   name: String,
@@ -13,8 +13,8 @@ const benevoleSchema = mongoose.Schema({
   dateNaissance: Date,
   heuresCumulees: Number,
   echelon: String,
-  mesEvent: mesEventSchema,
-  // events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
+  // mesEvent: mesEventSchema,
+  mesEvent: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
 
 });
 
