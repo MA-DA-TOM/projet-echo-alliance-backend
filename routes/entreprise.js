@@ -69,7 +69,8 @@ router.post('/inscription', (req, res) => {
   });
 });
 
-//Connexion
+
+//Connexion (entreprise)
 router.post('/connexion', (req, res) => {
   if (!checkBody(req.body, ['email', 'password'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
@@ -98,7 +99,7 @@ router.post('/connexion', (req, res) => {
 });
 
 
-//Updater les offres de l'entreprise
+//Updater les offres de l'entreprise (entreprise + benevole)
 router.post("/offres/:ID", (req, res) => {
   User.updateOne(
     {
@@ -119,7 +120,7 @@ router.post("/offres/:ID", (req, res) => {
 })
 
 
-//Récupérer toutes les entreprises
+//Récupérer toutes les entreprises (x3)
 router.get('/all', (req, res) => {
   Entreprise.find()
     .then(data => {

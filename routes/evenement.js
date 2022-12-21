@@ -6,7 +6,7 @@ const { checkBody } = require('../modules/checkBody');
 require('../models/connection');
 const Event = require('../models/events');
 
-// creation d'un événement
+// creation d'un événement (pour asso)
 router.post('/', (req, res) => {
   if (!checkBody(req.body, ['name', 'description', 'dateDebut', 'dateFin', 'longitude', 'latitude', 'numero', 'rue', 'ville', 'codePostal','assoCreator'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
 });
 
 
-//Récupérer tous les événements
+//Récupérer tous les événements (pour map/search x3)
 router.get('/allEvent', (req, res) => {
   Event.find()
   .populate("assoCreator")
@@ -49,7 +49,7 @@ router.get('/allEvent', (req, res) => {
 });
 
 
-//Récupérer un événement par son nom
+//Récupérer un événement par son nom (pour map/search x3)
 router.get('/event', (req, res) => {
   Event.find({ _id: req.body.id })
   .populate("assoCreator")
@@ -60,7 +60,7 @@ router.get('/event', (req, res) => {
 });
 
 
-//Supprimer un événement
+//Supprimer un événement (pour association)
 router.get('/delete', (req, res) => {
   // const { _id } = req.body;
 
@@ -73,7 +73,7 @@ router.get('/delete', (req, res) => {
   });
 });
 
-//ajouter un bénévole à un événement
+//ajouter un bénévole à un événement (pour benevole)
 router.post('/addBenevole', (req, res) => {
   Event.updateOne({ name: req.body.name },
     {
@@ -85,7 +85,7 @@ router.post('/addBenevole', (req, res) => {
   )
 });
 
-//Supprimer un bénévole d'un événement
+//Supprimer un bénévole d'un événement (pour benevole)
 router.get('/deleteBenevole', (req, res) => {
   Event.updateOne({ _id: req.body.id },
     {

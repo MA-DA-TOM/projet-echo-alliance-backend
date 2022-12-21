@@ -9,6 +9,7 @@ require('../models/connection');
 const Association = require('../models/associations');
 
 
+
 router.post('/inscription', (req, res) => {
   if (!checkBody(req.body, [
     'name', 'description', 'email', 'password', 'RNA', 'longitude', 'latitude', 'numero', 'rue', 'ville', 'codePostal',
@@ -44,18 +45,18 @@ router.post('/inscription', (req, res) => {
         }
       });
 
-      newAsso.save().then((data) => {
-        res.json({ result: true, data: data });
+      newAsso.save().then(() => {
+        res.json({ result: true });
       });
     } else {
       // Asso already exists in database
-      res.json({ result: false, error: 'Association already exists' });
+      res.json({ result: false, error: 'Vous avez déjà un compte' });
     };
   });
 });
 
 
-//Connexion association
+//Connexion association (association)
 router.post('/connexion', (req, res) => {
   if (!checkBody(req.body, ['email', 'password'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
@@ -86,7 +87,7 @@ router.post('/connexion', (req, res) => {
 });
 
 
-// ajouter un evenement
+// ajouter un evenement dans sa liste en cas de creation d'un evenement (association)
 router.post("/addEvent", (req, res) => {
   Association.updateOne(
     {
@@ -103,9 +104,9 @@ router.post("/addEvent", (req, res) => {
 })
 
 
-// Supprimer un événement de sa liste en cas de suppression de l'événement
+// Supprimer un événement de sa liste en cas de suppression de l'événement (association)
 router.get('/deleteEvent', (req, res) => {
-  Association.updateOne({ email: req.body.email },
+  Association.updateOne({ email: req.body.email }, 
     {
       $pull: {
         assoEvents: req.body.assoEvents
@@ -116,10 +117,10 @@ router.get('/deleteEvent', (req, res) => {
 });
 
 
-//Liste événements d'une asso
+//Liste événements d'une asso (x3)
 router.get('/assoData', (req, res) => {
 
-  Association.find({ email: req.body.email })
+  Association.find({ email: req.body.email }, { password: 0 })
     .populate("assoEvents")
     .then(data => {
       res.json({ result: true, data: data });

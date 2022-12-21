@@ -10,7 +10,7 @@ const { checkBody } = require('../modules/checkBody');
 
 
 router.post('/inscription', (req, res) => {
-  if (!checkBody(req.body, ['name', 'lastName', 'email', 'password', 'dateNaissance'])) {
+  if (!checkBody(req.body, ['name', 'lastName', 'email', 'password',])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
@@ -33,8 +33,8 @@ router.post('/inscription', (req, res) => {
         dateNaissance: req.body.dateNaissance,
       });
 
-      newBenevole.save().then((data) => {
-        res.json({ result: true, data: data });
+      newBenevole.save().then(() => {
+        res.json({ result: true });
       });
     } else {
       // Benevole already exists in database
@@ -43,7 +43,8 @@ router.post('/inscription', (req, res) => {
   });
 });
 
-// connexion bénévole
+
+// connexion bénévole (benevole)
 router.post('/connexion', (req, res) => {
   if (!checkBody(req.body, ['email', 'password'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
@@ -51,6 +52,7 @@ router.post('/connexion', (req, res) => {
   }
 
   Benevole.findOne({ email: req.body.email })
+    .populate("mesEvent")
     .then(data => {
       if (bcrypt.compareSync(req.body.password, data.password)) {
         res.json({
@@ -72,7 +74,7 @@ router.post('/connexion', (req, res) => {
 
 
 
-// Ajouter un événement à sa liste
+// Ajouter un événement à sa liste en cas d'inscription (benevole)
 router.post('/addMesEvents', (req, res) => {
   Benevole.updateOne({ email: req.body.email },
     {
@@ -85,7 +87,7 @@ router.post('/addMesEvents', (req, res) => {
 });
 
 
-// Supprimer un événement de sa liste (se désinscrire)
+// Supprimer un événement de sa liste /se désinscrire (benevole)
 router.get('/deleteEvent', (req, res) => {
   Benevole.updateOne({ email: req.body.email },
     {
@@ -98,7 +100,7 @@ router.get('/deleteEvent', (req, res) => {
 });
 
 
-// Récupérer toute la data d'un document
+// Récupérer toute la data d'un document 1
 router.get('/getMesEvents', (req, res) => {
   Benevole.findOne({ email: req.body.email }, { password: 0 })
     .populate("mesEvent")

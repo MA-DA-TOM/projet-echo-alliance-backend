@@ -35,6 +35,7 @@ const entrepriseSchema = mongoose.Schema({
   password: String,
   token: String,
   siret: Number,
+  uri: String,
   adresse: AdressEntrepriseSchema,
   dirigeant: dirigeantSchema,
   offres: offresSchema,

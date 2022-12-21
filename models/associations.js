@@ -22,6 +22,7 @@ const associationSchema = mongoose.Schema({
   password: String,
   token: String, 
   RNA: String,
+  uri: String,
   adresse: [adressAssoSchema],
   //Clé étrangère d'events pour trouver les events créé par l'asso
   assoEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],

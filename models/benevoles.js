@@ -13,6 +13,7 @@ const benevoleSchema = mongoose.Schema({
   dateNaissance: Date,
   heuresCumulees: Number,
   echelon: String,
+  uri: String,
   // mesEvent: mesEventSchema,
   mesEvent: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
 

@@ -26,10 +26,11 @@ const eventSchema = mongoose.Schema({
   dateDebut: Date,
   dateFin: Date,
   duree: Number,
+  uri: String,
   adresse: adressEventSchema,
   // utilisation de l'id des bénévoles et de l'asso souhaité pour avoir un tableau d'id qui sera populate quand on cherchera les bénévoles et ainsi voir toutes les infos nécéssaire
   assoCreator: {type: mongoose.Schema.Types.ObjectId, ref: 'associations'},
-  bénévoles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'benevoles' }],
+  benevoles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'benevoles' }],
 });
 
 const Event = mongoose.model('events', eventSchema);
