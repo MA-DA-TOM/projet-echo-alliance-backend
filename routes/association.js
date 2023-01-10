@@ -28,20 +28,20 @@ router.post('/inscription', (req, res) => {
       const newAsso = new Association({
         name: req.body.name,
         description: req.body.description,
-        siteWeb: req.body.siteWeb,
+        webSite: req.body.siteWeb,
         email: req.body.email,
         password: hash,
         token: token,
         RNA: req.body.RNA,
-        adresse: {
+        adress: {
           coordinate: {
             latitude: req.body.latitude,
             longitude: req.body.longitude,
           },
-          numero: req.body.numero,
-          rue: req.body.rue,
-          ville: req.body.ville,
-          codePostal: req.body.codePostal,
+          number: req.body.numero,
+          street: req.body.rue,
+          city: req.body.ville,
+          zipCode: req.body.codePostal,
         }
       });
 
@@ -50,7 +50,7 @@ router.post('/inscription', (req, res) => {
       });
     } else {
       // Asso already exists in database
-      res.json({ result: false, error: 'Vous avez déjà un compte' });
+      res.json({ result: false, error: 'account already exist' });
     };
   });
 });
@@ -72,11 +72,11 @@ router.post('/connexion', (req, res) => {
             ID: data.id,
             name: data.name,
             description: data.description,
-            siteWeb: data.siteWeb,
+            webSite: data.webSite,
             email: data.email,
             token: data.token,
             RNA: data.RNA,
-            adresse: data.adresse,
+            adress: data.adress,
             assoEvents: data.assoEvents,
           }
         });
@@ -118,12 +118,12 @@ router.get('/deleteEvent', (req, res) => {
 
 
 //Liste événements d'une asso (x3)
-router.get('/assoData', (req, res) => {
+router.get('/assoData/:email', (req, res) => {
 
-  Association.find({ email: req.body.email }, { password: 0 })
+  Association.findOne({email: req.params.email})
     .populate("assoEvents")
     .then(data => {
-      res.json({ result: true, data: data });
+      res.json({ result: true, data: data.assoEvents });
     });
 });
 

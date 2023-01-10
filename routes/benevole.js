@@ -30,7 +30,9 @@ router.post('/inscription', (req, res) => {
         email: req.body.email,
         password: hash,
         token: token,
-        dateNaissance: req.body.dateNaissance,
+        birthdate: req.body.dateNaissance,
+        hours: 0,
+        level: 0,
       });
 
       newBenevole.save().then(() => {
@@ -52,7 +54,7 @@ router.post('/connexion', (req, res) => {
   }
 
   Benevole.findOne({ email: req.body.email })
-    .populate("mesEvent")
+    .populate("myEvents")
     .then(data => {
       if (bcrypt.compareSync(req.body.password, data.password)) {
         res.json({
@@ -62,8 +64,9 @@ router.post('/connexion', (req, res) => {
             lastName: data.lastName,
             email: data.email,
             token: data.token,
-            dateNaissance: data.dateNaissance,
-            mesEvent: data.mesEvent,
+            myEvents: data.myEvents,
+            hours: data.hours,
+            level: data.level,
           }
         });
       } else {
@@ -75,11 +78,11 @@ router.post('/connexion', (req, res) => {
 
 
 // Ajouter un événement à sa liste en cas d'inscription (benevole)
-router.post('/addMesEvents', (req, res) => {
+router.post('/addEvents', (req, res) => {
   Benevole.updateOne({ email: req.body.email },
     {
       $push: {
-        mesEvent: req.body.mesEvent
+        myEvents: req.body.mesEvent
       }
     }
   ).then(data => { res.json({ data }); }
@@ -92,7 +95,7 @@ router.get('/deleteEvent', (req, res) => {
   Benevole.updateOne({ email: req.body.email },
     {
       $pull: {
-        mesEvent: req.body.mesEvent
+        myEvents: req.body.mesEvent
       }
     }
   ).then(data => { res.json({ data }); }
@@ -101,9 +104,9 @@ router.get('/deleteEvent', (req, res) => {
 
 
 // Récupérer toute la data d'un document 1
-router.get('/getMesEvents', (req, res) => {
+router.get('/getMyData', (req, res) => {
   Benevole.findOne({ email: req.body.email }, { password: 0 })
-    .populate("mesEvent")
+    .populate("myEvents")
     .then(data => {
       res.json({ data });
     });

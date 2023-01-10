@@ -7,38 +7,38 @@ const coordSchema = mongoose.Schema({
 
 const AdressEntrepriseSchema = mongoose.Schema({
   coordinate: coordSchema,
-  numero: String,
+  number: String,
   //String si jamais 31bis par exemple
-  rue: String,
-  ville: String,
-  codePostal: Number
+  street: String,
+  city: String,
+  zipCode: Number
 })
 
 
 const dirigeantSchema = mongoose.Schema({
-  nom: String,
-  prenom: String,
-  telephone: Number,
+  lastName: String,
+  firstName: String,
+  phone: Number,
 })
 
 const offresSchema = mongoose.Schema({
-  1: String,
-  2: String,
-  3: String,
+  first: String,
+  second: String,
+  third: String,
 })
 
 const entrepriseSchema = mongoose.Schema({
   name: String,
   description: String,
-  siteWeb: String,
+  webSite: String,
   email: String,
   password: String,
   token: String,
   siret: Number,
   uri: String,
-  adresse: AdressEntrepriseSchema,
-  dirigeant: dirigeantSchema,
-  offres: offresSchema,
+  adress: AdressEntrepriseSchema,
+  leader: dirigeantSchema,
+  offers: offresSchema,
 });
 
 const Entreprise = mongoose.model('entreprises', entrepriseSchema);

@@ -7,8 +7,8 @@ require('../models/connection');
 const Event = require('../models/events');
 
 // creation d'un événement (pour asso)
-router.post('/', (req, res) => {
-  if (!checkBody(req.body, ['name', 'description', 'dateDebut', 'dateFin', 'longitude', 'latitude', 'numero', 'rue', 'ville', 'codePostal','assoCreator'])) {
+router.post('/inscription', (req, res) => {
+  if (!checkBody(req.body, ['name', 'description', 'longitude', 'latitude', 'startDate', 'endDate', 'number', 'street', 'city', 'zipCode','assoCreator'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
@@ -17,19 +17,21 @@ router.post('/', (req, res) => {
   const newEvent = new Event({
     name: req.body.name,
     description: req.body.description,
-    dateDebut: req.body.dateDebut,
-    dateFin: req.body.dateFin,
-    adresse: {
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    duration: req.body.duration,
+    adress: {
       coordinate: {
         latitude: req.body.latitude,
         longitude: req.body.longitude,
       },
-      numero: req.body.numero,
-      rue: req.body.rue,
-      ville: req.body.ville,
-      codePostal: req.body.codePostal,
+      number: req.body.number,
+      street: req.body.street,
+      city: req.body.city,
+      zipCode: req.body.zipCode,
     },
-    assoCreator: req.body.assoCreator
+    assoCreator: req.body.assoCreator,
+    benevoles: null
   });
 
   newEvent.save().then((data) => {
@@ -42,7 +44,7 @@ router.post('/', (req, res) => {
 router.get('/allEvent', (req, res) => {
   Event.find()
   .populate("assoCreator")
-  .populate("bénévoles")
+  .populate("benevoles")
   .then(data => {
     res.json({ result: true, data: data });
   });
@@ -53,7 +55,7 @@ router.get('/allEvent', (req, res) => {
 router.get('/event', (req, res) => {
   Event.find({ _id: req.body.id })
   .populate("assoCreator")
-  .populate("bénévoles")
+  .populate("benevoles")
   .then( data => {
     res.json({ result: true, data: data });
   });
@@ -78,7 +80,7 @@ router.post('/addBenevole', (req, res) => {
   Event.updateOne({ name: req.body.name },
     {
       $push: {
-        bénévoles: req.body.benevoles
+        benevoles: req.body.benevoles
         }
     }
   ).then(data => { res.json({ data }); }
@@ -90,7 +92,7 @@ router.get('/deleteBenevole', (req, res) => {
   Event.updateOne({ _id: req.body.id },
     {
       $pull: {
-        bénévoles: req.body.benevoles
+        benevoles: req.body.benevoles
       }
     }
   ).then(data => { res.json({ result: true, data: data }); }

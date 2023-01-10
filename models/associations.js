@@ -7,23 +7,23 @@ const coordSchema = mongoose.Schema({
 
 const adressAssoSchema = mongoose.Schema({
     coordinate : coordSchema,
-    numero: String,
+    number: String,
     //String si jamais 31bis par exemple
-    rue: String,
-    ville: String,
-    codePostal: Number,
+    street: String,
+    city: String,
+    zipCode: Number,
 })
 
 const associationSchema = mongoose.Schema({
   name: String,
   description: String,
-  siteWeb: String,
+  webSite: String,
   email: String,
   password: String,
   token: String, 
   RNA: String,
   uri: String,
-  adresse: [adressAssoSchema],
+  adress: [adressAssoSchema],
   //Clé étrangère d'events pour trouver les events créé par l'asso
   assoEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
 });

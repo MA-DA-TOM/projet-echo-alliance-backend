@@ -25,25 +25,30 @@ router.post('/inscription', (req, res) => {
       const newEntreprise = new Entreprise({
         name: req.body.name,
         description: req.body.description,
-        siteWeb: req.body.siteWeb,
+        webSite: req.body.siteWeb,
         email: req.body.email,
         password: hash,
         token: token,
         siret: req.body.siret,
-        adresse: {
+        adress: {
           coordinate: {
             latitude: req.body.latitude,
             longitude: req.body.longitude,
           },
-          numero: req.body.numero,
-          adresse: req.body.adresse,
-          ville: req.body.ville,
-          codePostal: req.body.codePostal,
+          number: req.body.numero,
+          street: req.body.rue,
+          city: req.body.ville,
+          zipCode: req.body.codePostal,
         },
-        dirigeant: {
-          nom: req.body.nom,
-          prenom: req.body.prenom,
-          telephone: req.body.telephone,
+        leader: {
+          lastName: req.body.nom,
+          firstName: req.body.prenom,
+          phone: req.body.telephone,
+        },
+        offers: {
+          first: "null",
+          second: "null",
+          third: "null",
         }
       });
 
@@ -53,12 +58,12 @@ router.post('/inscription', (req, res) => {
             ID: data.id,
             name: data.name,
             description: data.description,
-            siteWeb: data.siteWeb,
+            webSite: data.siteWeb,
             email: data.email,
             token: data.token,
             siret: data.siret,
-            adresse: data.adresse,
-            dirigeant: data.dirigeant
+            adress: data.adresse,
+            offers: data.offres,
           }
         });
       });
@@ -84,12 +89,12 @@ router.post('/connexion', (req, res) => {
           ID: data.id,
           name: data.name,
           description: data.description,
-          siteWeb: data.siteWeb,
+          webSite: data.webSite,
           email: data.email,
           token: data.token,
           siret: data.siret,
-          adresse: data.adresse,
-          dirigeant: data.dirigeant
+          adress: data.adress,
+          offers: data.offers,
         }
       });
     } else {
@@ -100,17 +105,17 @@ router.post('/connexion', (req, res) => {
 
 
 //Updater les offres de l'entreprise (entreprise + benevole)
-router.post("/offres/:ID", (req, res) => {
-  User.updateOne(
+router.post("/offres", (req, res) => {
+  Entreprise.updateOne(
     {
-      ID: req.params.ID,
+      email: req.body.email,
     },
     {
       $set: {
-        offres: {
-          1: req.body.offre1,
-          2: req.body.offre2,
-          3: req.body.offre3,
+        offers: {
+          first: req.body.offre1,
+          second: req.body.offre2,
+          third: req.body.offre3,
         },
       }
     }
@@ -120,8 +125,33 @@ router.post("/offres/:ID", (req, res) => {
 })
 
 
+//récupérer une seule entreprise 
+router.post('/getone', (req, res) => {
+  if (!checkBody(req.body, ['email'])) {
+    res.json({ result: false, error: 'Missing or empty fields' });
+    return;
+  }
+
+  Entreprise.findOne({ email: req.body.email }).then(data => {
+
+    res.json({
+      result: true, data: {
+        ID: data.id,
+        name: data.name,
+        description: data.description,
+        webSite: data.webSite,
+        email: data.email,
+        token: data.token,
+        adress: data.adress,
+        offers: data.offers
+      }
+    });
+  });
+});
+
 //Récupérer toutes les entreprises (x3)
 router.get('/all', (req, res) => {
+
   Entreprise.find()
     .then(data => {
       res.json({ result: true, data: data });

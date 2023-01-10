@@ -8,26 +8,21 @@ const coordSchema = mongoose.Schema({
 
 const adressEventSchema = mongoose.Schema({
     coordinate: coordSchema,
-    numero: String,
+    number: String,
     //String si jamais 31bis par exemple
-    rue: String,
-    ville: String,
-    codePostal: Number
+    street: String,
+    city: String,
+    zipCode: Number
 })
-
-// const benevoleSchema = mongoose.Schema({
-//   benevoles:[],
-// }) => Il faut mettre ObjectId dans bénévole
-
 
 const eventSchema = mongoose.Schema({
   name: String,
   description: String,
-  dateDebut: Date,
-  dateFin: Date,
-  duree: Number,
+  startDate: Date,
+  endDate: Date,
+  duration: Number,
   uri: String,
-  adresse: adressEventSchema,
+  adress: adressEventSchema,
   // utilisation de l'id des bénévoles et de l'asso souhaité pour avoir un tableau d'id qui sera populate quand on cherchera les bénévoles et ainsi voir toutes les infos nécéssaire
   assoCreator: {type: mongoose.Schema.Types.ObjectId, ref: 'associations'},
   benevoles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'benevoles' }],
